@@ -1,0 +1,44 @@
+<div class="row">
+	<div class="col-md-3">
+		
+		<div class="sidebar-list">
+			
+				<li class="sidebar-item"><%= link_to "Méthodes de payement", payment_method_path, class: "sidebar-link"%></li>
+				<li class="sidebar-item"><%= link_to "Méthodes de virement", payout_method_path, class: "sidebar-link active"%></li>
+				<li class="sidebar-item"><%= link_to "Systèmes de notifications", notification_settings_path, class: "sidebar-link"%></li>
+			
+		</div>
+
+	</div>
+
+	<div class="col-md-9">
+
+		<div class="panel panel-default">
+			
+			<div class="panel-heading"> Méthodes de virement </div>
+
+			<div class="panel-body">
+			</br>
+
+				<div class="container text-center">
+
+					<!-- on va checker se l'utilisateur a une compre merchant stripe -->
+					<% if current_user.merchant_id.blank? %>
+						<%= link_to image_tag('stripe-button.png'), stripe_express_path %>
+
+					<% else %>
+						<div class="text-center">
+							<%= link_to "Stripe Express Backoffice", @login_link.url, class: "btn btn-normal" %>
+						</div>
+					<% end %>
+
+
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<script src="https://js.stripe.com/v3/"></script>

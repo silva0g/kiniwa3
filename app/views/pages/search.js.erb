@@ -1,0 +1,9 @@
+$('#menu_listing').html('<%= j render partial: "menus/menus_list", locals: {menus: @arrMenus} %>')
+
+/* ######
+ On met cet code snipet pour faire la mise à jour du google maps a chaque reprise 
+ que une nouvelle recherche est lancée
+
+ ###### */
+
+initialize(<%= raw @arrMenus.to_json %>)

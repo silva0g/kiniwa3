@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  menu: one
+  start_date: 2017-08-06 05:46:56
+  end_date: 2017-08-06 05:46:56
+  price: 1
+  total: 1
+  start_time: 2017-08-06 05:46:56
+  convive: 1
+
+two:
+  user: two
+  menu: two
+  start_date: 2017-08-06 05:46:56
+  end_date: 2017-08-06 05:46:56
+  price: 1
+  total: 1
+  start_time: 2017-08-06 05:46:56
+  convive: 1

@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-md-3">
+    <ul class="sidebar-list">
+      <li class="sidebar-item"><%= link_to "Mes listes de menus", menus_path, class: "sidebar-link" %></li>
+      <li class="sidebar-item"><%= link_to "Mes prestations", vos_prestations_path, class: "sidebar-link" %></li>
+      <li class="sidebar-item"><%= link_to "Mes commandes", vos_commandes_path, class: "sidebar-link active" %></li>
+    </ul>
+  </div>
+  <div class="col-md-9">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Mes commandes
+      </div>
+      <div class="panel-body">
+
+        <% @commandes.each do |commande| %>
+          <div class="row">
+            <div class="col-md-2">
+              <%= commande.start_date.strftime('%v') %>
+            </div>
+              
+            <div class="col-md-2">
+              <%= link_to menu_path(commande.menu) do %>
+                <%= image_tag commande.menu.cover_photo(:thumb) %>
+              <% end %>
+            </div>
+            
+            <div class="col-md-5">
+              <%= link_to commande.menu.listing_name, menu_path(commande.menu) %><br/><br/>
+              <span>
+                <%= image_tag avatar_url(commande.menu.user), class: "img-circle avatar-small" %>
+                <%= link_to user_path(commande.menu.user) do %>
+                    <%= commande.menu.user.fullname %>
+                <% end %>
+              </span>
+            </div>
+
+            <div class="col-md-3">
+              <%= render partial: "reviews/client_form", locals: {reservation: commande} %>
+            </div>
+        
+          </div>
+          <hr/>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

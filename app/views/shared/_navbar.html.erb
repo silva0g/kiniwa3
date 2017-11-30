@@ -1,0 +1,90 @@
+
+<!-- Static navbar -->
+<nav class="navbar navbar-default navbar-static-top" style="margin-bottom: 0px">
+  	<div class="container">
+  			<div class="navbar-header">
+  				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+  					<span class="sr-only">Toggle navigation</span>
+  					<span class="icon-bar"></span>
+  					<span class="icon-bar"></span>
+  					<span class="icon-bar"></span>
+  				</button>
+
+  				<%= link_to "Kinywa", root_path, class: "navbar-brand" %>
+          <!--<%= link_to image_tag "kinywa-logo.JPG", alt: "Rails logo", class: "logo-small" %>-->
+  			</div>
+  			<div id="navbar" class="navbar-collapse collapse">
+          <!-- Ajouter un champ de recherche sur le navbar -->
+          <%= form_tag search_path, class:"navbar-form navbar-left", method: :get do %>
+              <div class="form-group">
+                <%= text_field_tag :search, params[:search], placeholder: "Partout...", class: "form-control" %>
+              </div>
+          <% end %>
+
+
+  				<ul class="nav navbar-nav navbar-right">
+            <li>
+                
+                <%= link_to "Devenir chef", new_menu_path, class: "btn btn-normal btn_extra_small", style: "color: white; text-decoration: none;" %>
+            </li>
+            <!-- Ajouter une condition ici-->
+            <% if (!user_signed_in?)%>
+                <li><%= link_to "SE CONNECTER", new_user_session_path %></li>
+                <li><%= link_to "S'INSCRIRE", new_user_registration_path %></li>
+            <% else %>
+
+                <li>
+                    <%= link_to notifications_path do %>
+                      <i class="fa fa-bell fa-2x icon-babu"></i>
+                      <span class="badge" id="navbar_num_of_unread"><%= current_user.unread if current_user.unread > 0 %></span>
+                    <% end %>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <%= image_tag avatar_url(current_user), class: "img-circle avatar-medium" %>&nbsp;
+
+                    <%= current_user.fullname %>
+
+                    <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><%= link_to "Back office", dashboard_path %></li>
+                    <li><%= link_to "Gerer mes menus", menus_path %></li>
+                    <li><%= link_to "Ajouter un menu", new_menu_path %></li>
+                    <li><%= link_to "Mes prestations", vos_prestations_path %></li>
+                    <li><%= link_to "Mes commandes", vos_commandes_path %></li>
+                    <li role="separator" class="divider"></li>
+                    <li class="dropdown-header">Mon Profil</li>
+                    <li><%= link_to "Editer mon profil", edit_user_registration_path %></li>
+                    <li><%= link_to "Sortir", destroy_user_session_path, method: :delete %></li>
+                  </ul>
+                </li>
+            <% end %>
+  					
+  				</ul>
+  			</div><!--/.nav-collapse -->
+  	</div><!--/.container-fluid -->
+</nav>
+
+<% if (user_signed_in?) && !current_page?(root_path) && !current_page?("/menus/#{params[:id]}")%>
+
+
+    <nav class="navbar navbar-default" style="background-color: #565A5C">
+        <div class="container">
+          <ul class="nav navbar-nav">
+            <li <% if current_page?(dashboard_path) %> class="active" <% end %> ><%= link_to "Back office", dashboard_path %></li>
+            <li<% if current_page?(menus_path) %> class="active" <% end %> > <%= link_to "Ma liste de menus", menus_path %></li>
+            <li<% if current_page?(conversations_path) %> class="active" <% end %> ><%= link_to "Messages", conversations_path %></li>
+            
+           
+            <li<% if current_page?(chef_calendar_path) %> class="active" <% end %> ><%= link_to "Mon calendrier", chef_calendar_path %>
+            </li>
+            
+
+            <li<% if current_page?(revenues_path) %> class="active" <% end %> ><%= link_to "Revenues", revenues_path %></li>
+            <li<% if current_page?(payment_method_path) || current_page?(payout_method_path) %> class="active" <% end %> ><%= link_to "Paramètres de compte", payment_method_path %></li>
+
+          </ul>
+        </div>
+    </nav>
+
+<% end %> 

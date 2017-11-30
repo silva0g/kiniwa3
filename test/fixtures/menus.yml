@@ -1,0 +1,31 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  menu_type: MyString
+  assiete_type: MyString
+  servings: 1
+  listing_name: MyString
+  summary: MyText
+  address: MyString
+  is_salee: false
+  is_sucree: false
+  is_gluten: false
+  is_epicee: false
+  price: 1
+  active: false
+  user: one
+
+two:
+  menu_type: MyString
+  assiete_type: MyString
+  servings: 1
+  listing_name: MyString
+  summary: MyText
+  address: MyString
+  is_salee: false
+  is_sucree: false
+  is_gluten: false
+  is_epicee: false
+  price: 1
+  active: false
+  user: two

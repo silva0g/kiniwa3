@@ -1,0 +1,14 @@
+<div class="panel">
+	<div class="panel-body">
+		<%= link_to conversations_path do %>
+		<strong>
+			<%= notification.content %>
+		</strong>
+		<span class="pull-right">
+			
+				<%= notification.created_at.to_formatted_s(:short) %>
+
+		</span>
+		<% end %>
+	</div>
+</div>

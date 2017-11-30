@@ -1,0 +1,55 @@
+<div class="row">
+	<div class="col-md-3">
+		
+		<ul class="sidebar-list">
+			<li class="sidebar-item"> <%= link_to "Ma liste de menus", menus_path, class: "sidebar-link active" %></li>
+			<li class="sidebar-item"><%= link_to "Mes prestations", vos_prestations_path, class: "sidebar-link" %></li>
+      	<li class="sidebar-item"><%= link_to "Mes commandes", vos_commandes_path, class: "sidebar-link" %></li>
+
+		</ul>
+
+	</div>
+	</br>
+
+	<div class="col-md-9">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Menus
+
+			</div>
+
+			<div class="panel-body">
+				<% @menus.each do |menu| %>
+					<!-- Pour chaque menu qu'on a on va creer une ligne: -->
+					<div class="row">
+
+						<div class="col-md-2">
+							<%= image_tag menu.cover_photo(:thumb) %>
+
+						</div>
+
+						<div class="col-md-7">
+							<h4><%= menu.listing_name %></h4>
+						</div>
+						<div class="col-md-3 right">
+							<%= link_to "CHANGER", listing_menu_path(menu), class: "btn btn-form" %>
+						</div>
+
+					</div>
+					<hr/>
+				<% end %>
+
+				
+					<% if current_user.menus.length == 0 %>
+						
+						Vous n'avez pas crée aucun menu encore, devenez chef pour partager vos création avec nos clients.
+					
+
+						<%= link_to "Proposer vos menus", new_menu_path, class:"btn btn-normal"%>
+					<% end %>
+				
+
+			</div>
+		</div>
+	</div>
+</div>

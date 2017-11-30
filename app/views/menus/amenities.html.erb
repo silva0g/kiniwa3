@@ -1,0 +1,47 @@
+<div class="row">
+	<div class="col-md-3">
+		<%= render 'menu_menu' %>
+	</div>
+
+	<div class="col-md-9">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Ingrédients
+			</div>
+
+			<div class="panel-body">
+				<div class="container">
+
+					<%= form_for @menu do |f| %>
+
+						<div class="for-group">
+							
+							<div class="col-md-4">
+								<%= f.check_box :is_salee %>Salée
+							</div>
+
+							<div class="col-md-4">
+								<%= f.check_box :is_sucree %>Sucrée
+							</div>
+
+							<div class="col-md-4">
+								<%= f.check_box :is_epicee %>Epicée
+							</div>
+
+							<div class="col-md-4">
+								<%= f.check_box :is_gluten %>Sans gluten
+							</div>
+
+						</div>
+						<br/><br/><br/><br/>
+
+						<div class="text-center">
+							<%= f.submit "ENREGISTRER", class: "btn btn-form" %>
+						</div>
+
+					<% end %>	
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

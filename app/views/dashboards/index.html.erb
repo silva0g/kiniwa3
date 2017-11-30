@@ -1,0 +1,67 @@
+<div class="row">
+	<div class="col-md-3">
+		<div class="center">
+			<%= image_tag avatar_url(current_user), class: "avatar-full" %>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-heading"><%= current_user.fullname %></div>
+
+			<div class="panel-body">
+				<ul class="sidebar-list">
+					<% if current_user.confirmation_token %>
+						<li>Email Address <span class="pull-right icon-babu"><i class="fa fa-check-circle-o"></i></span></li>
+					<% end %>
+
+					<% if current_user.provider %>
+						<li>Facebook <span class="pull-right icon-babu"><i class="fa fa-check-circle-o"></i></span></li>
+					<% end %>
+
+					<% if current_user.phone_verified %>
+						<li>Téléphone<span class="pull-right icon-babu"><i class="fa fa-check-circle-o"></i></span></li>
+					<% end %>
+				</ul>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="col-md-9">
+
+		<!-- Panneau des notifications -->
+		<div class="panel panel-default">
+			<div class="panel-heading">Mes notifications</div>
+
+			<div class="panel-body">
+				<%= link_to notifications_path do %>
+					<% if current_user.unread > 0 %>
+						Vous avez <span id="num_of_unread"><%= current_user.unread %></span>   notification(s).
+					<% else %>
+						Vous n'avez pas de notifications pour l'instant.
+					<% end %>
+				<% end %>
+			</div>
+		</div>
+		
+		<!-- Vos listes de menus  -->
+		<div class="panel panel-default">
+			<% if current_user.menus.length == 0 %>
+			<div class="panel-heading">
+			Ma liste de menus (<%= @menus.length %>)	
+			</div>
+			<div class="panel-body">
+				Vous n'avez pas encore crée des menus. 
+			</div>
+			<% else %>
+			<div class="panel-heading">Ma liste de menus (<%= @menus.length %>)</div>
+
+			
+
+			<div class="panel-body">
+				<%= render partial: "menus/menus_list", locals: {menus: @menus} %>
+			</div>
+			<% end %>
+		</div>
+
+	</div>
+</div>

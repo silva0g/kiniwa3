@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Kinywa3</title>
+    <%= csrf_meta_tags %>
+    <%= action_cable_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <!-- Google maps API -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD32OE5esMM6xLyiDLtyvkBBF497mK6fC8&libraries=places"></script>
+    
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+      
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/cupertino/jquery-ui.css">
+    
+  </head>
+
+  <body>
+
+  	
+  	<%= render 'shared/navbar' %>
+    <%= render 'shared/message' %>
+
+    <% if current_user %>
+        <input type="hidden" id="user_id" value="<%= current_user.id %>">
+    <% end %>
+
+  	<!--<p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>-->
+
+    
+    <div class="container">
+    	<%= yield %>
+    </div>
+    </br></br>
+    </hr>
+    <%= render 'shared/footer_distributed' %>
+  </body>
+</html>

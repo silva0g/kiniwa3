@@ -1,0 +1,238 @@
+<div id="main">
+	<div id="left">
+		<!-- PANNEAU DE RECHERCHE -->
+		<div class="row">
+      		<div class="col-md-offset-4 col-md-4">
+        		<button id="filter" class="btn btn-default" data-toggle="collapse" data-target="#collapsePanel">
+          Recherche avancée <i class="fa fa-chevron-down"></i>
+        	</button>
+      		</div>
+    	</div>
+
+		<div class="row">
+			<br/>
+			<!--class="collapse"-->
+			<div class="collapse" id="collapsePanel">
+
+				<%= search_form_for @search, url: search_path, remote: true do |f| %>
+					
+					<div class="row">
+						<div class="col-md-6">
+							<label>Fourchette de Prix:</label>
+							<div id="slider-range">
+
+							</div>
+						</div>
+
+						<div class="col-md-3">
+							<label>Prix minimum:</label>
+							<%= f.text_field :price_gteq, class: "form-control"%>
+						</div>
+
+						<div class="col-md-3">
+							<label>Prix maximum:</label>
+							<%= f.text_field :price_lteq, class: "form-control" %>
+						</div>
+					</div>
+					<hr/>
+
+					<div class="row">
+						<div class="col-md-6">
+							<%= text_field_tag :start_date, params[:start_date], readonly: true, placeholder: "Date du début", class: "form-control datepicker" %>
+						</div>
+
+						<div class="col-md-6">
+							<%= text_field_tag :end_date, params[:end_date], readonly: true, placeholder: "Date du fin", class: "form-control datepicker" %>
+						</div>
+					</div>
+					<hr/>
+
+					<div class="row">
+						<div class="col-md-4">
+							<%= check_box_tag "q[menu_type_eq_any][]", "Entire"%>Convivial
+						</div>
+
+						<div class="col-md-4">
+							<%= check_box_tag "q[menu_type_eq_any][]", "Entire"%>Tentation
+						</div>
+
+						<div class="col-md-4">
+							<%= check_box_tag "q[menu_type_eq_any][]", "Entire"%>Epicurie
+						</div>
+
+						<div class="col-md-4">
+							<%= check_box_tag "q[menu_type_eq_any][]", "Entire"%>Signature
+						</div>
+					</div>
+					<hr/>
+
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group select">
+								<label>Convives</label>
+								<%= f.select :servings_gteq, [["1", 1],["2", 2], ["3",3], ["4", 4], ["5", 5], ["6", 6], ["7",7],["8",8]], id: "servings", prompt: "Select...", class: "form-control" %>
+
+							</div>
+						</div>
+
+						<div class="col-md-4">
+							<div class="form-group select">
+								<label>Convives</label>
+								<%= f.select :servings_gteq, [["1", 1],["2", 2], ["3",3], ["4", 4], ["5", 5], ["6", 6], ["7",7],["8",8]], id: "servings", prompt: "Select...", class: "form-control" %>
+
+							</div>
+						</div>
+
+						<div class="col-md-4">
+							<div class="form-group select">
+								<label>Convives</label>
+								<%= f.select :servings_gteq, [["1", 1],["2", 2], ["3",3], ["4", 4], ["5", 5], ["6", 6], ["7",7],["8",8]], id: "servings", prompt: "Select...", class: "form-control" %>
+							</div>
+						</div>
+					</div>
+					<hr/>
+
+					<div class="row">
+						<div class="col-md-4">
+							<%= check_box_tag "q[is_salee_eq]", true %> Salée
+						</div>
+
+						<div class="col-md-4">
+							<%= check_box_tag "q[is_sucree_eq]", true %> Sucrée
+						</div>
+
+						<div class="col-md-4">
+							<%= check_box_tag "q[is_epicee_eq]", true %> Epicée
+						</div>
+
+						<div class="col-md-4">
+							<%= check_box_tag "q[is_gluten_eq]", true %> Gluten
+						</div>
+					</div>
+					<hr/>
+
+					<div class="row text-center">
+						<div class="col-md-12">
+							<%= f.submit "voir les menus", class: "btn btn-form" %>
+						</div>
+					</div>
+
+				<% end %>
+			</div>
+			<br/>	
+		</div>
+		<br/>
+
+		<div class="row" id="menu_listing">
+			<!-- On va enleve le code d'ici pour le renre via ajax @_menus;list.html.erb -->
+			<%= render partial: "menus/menus_list", locals: {menus: @arrMenus} %>
+		</div>			
+	</div>
+
+	
+	<div id="right">
+		<!-- GOOGLE MAPS IRA RESTER ICI -->
+		
+	    <div id="map" style="width: 100%; height: 100%"></div>
+
+	    <script src="https://maps.googleapis.com/maps/api/js"></script>
+	    
+	    <script>
+	    	// on passe la variable menus dans la fonction
+	        function initialize(menus) {
+	          var location = {lat: 44.5403, lng: -78.5463}
+
+	          if (menus.length > 0) {
+	            location = {lat: menus[0].latitude, lng: menus[0].longitude}
+	          }
+
+	          var map = new google.maps.Map(document.getElementById('map'), {
+	            center: location,
+	            zoom: 12
+	          });
+
+	          var marker, inforwindow;
+
+	          menus.forEach(function(menu) {
+	            marker = new google.maps.Marker({
+	              position: {lat: menu.latitude, lng: menu.longitude},
+	              map: map
+	            });
+
+	            inforwindow = new google.maps.InfoWindow({
+	              content: "<div class='map_price'>$" + menu.price + "</div>"
+	            });
+
+	            inforwindow.open(map, marker);
+	          })
+	        }
+
+	        google.maps.event.addDomListener(window, 'load', function() {
+	          initialize(<%= raw @arrMenus.to_json %>)
+	        });
+	    </script>
+	</div>
+</div>
+
+<script>
+	$('#start_date').datepicker({
+        dateFormat: 'dd-mm-yy',
+        minDate: 0,
+        maxDate: '3m',
+        onSelect: function(selected) {
+            $('#end_date').datepicker("option", "minDate", selected);
+            $('#end_date').attr("disabled", false)
+        }
+    });
+
+    $('#end_date').datepicker({
+        dateFormat: 'dd-mm-yy',
+        minDate: 0,
+        maxDate: '3m',
+        onSelect: function(selected) {
+            $('#start_date').datepicker("option", "maxDate", selected);
+        }
+    });
+
+    // Pour le recherche avencée
+    var open = true;
+
+    $('#filter').click(function(){
+
+    	if(open) {
+    		// Si ouvert on fera quelque chose ici
+    		$('#filter').html("Recherche avancée <i class='fa fa-chevron-up'></i>")
+
+    	} else {
+
+    		//Sinon on fera quelque chose ici
+    		$('#filter').html("Recherche avancée <i class='fa fa-chevron-down'></i>")
+    	}
+
+    	open = !open;
+    });
+</script>
+
+<script>
+	$(function(){
+		$("#q_price_gteq").val('25');
+		$("#q_price_lteq").val('125');
+		$("#slider-range").slider({
+
+			range: true,
+			min: 0,
+			max: 150,
+			values: [25, 125],
+			slide: function(event, ui){
+				$("#q_price_gteq").val(ui.values[0]);
+				$("#q_price_lteq").val(ui.values[1]);
+			}
+		});
+
+		//Ajouter quelques slyle pour le slider:
+
+		$(".ui-widget-header").css('background', '#00A699');
+		$(".ui-state-default, .ui-widget-content").css('background', 'white');
+		$(".ui-state-default, .ui-widget-content").css('border-color', '#00A699');
+	})
+</script>

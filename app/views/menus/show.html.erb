@@ -1,0 +1,224 @@
+<!-- IMAGE -->
+<div class="row">
+	<div class="col-md-8">
+		<%= image_tag @menu.cover_photo(nil), width: "100%" %>
+	</div>
+	<div class="col-md-4">
+		<h4 class="text-babu"><%= @menu.listing_name %></h4>
+		<%= render 'reservations/form' %>
+
+		<!--
+		<div class="row">
+
+			<% if @photos.length > 0 %>
+						<div id="myCarousel" class="carousel slide" data-ride="carousel">
+						  
+						  <ol class="carousel-indicators">
+						  	<% @photos.each do |photo| %>
+						    	<li data-target="#myCarousel" data-slide-to="photo.id"></li>
+						    <% end %>
+						   
+						   
+						  </ol>
+
+						  
+						  <div class="carousel-inner">
+						  	<% @photos.each do |photo| %>
+							  	<div class="item <%= 'active' if photo.id == @photos[0].id %>">
+							      <%= image_tag photo.image.url() %>
+							    </div>
+						  	<% end %>
+						  </div>
+
+						  
+						  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+						    <span class="glyphicon glyphicon-chevron-left"></span>
+						    <span class="sr-only">Previous</span>
+						  </a>
+						  <a class="right carousel-control" href="#myCarousel" data-slide="next">
+						    <span class="glyphicon glyphicon-chevron-right"></span>
+						    <span class="sr-only">Next</span>
+						  </a>
+						</div>
+			<% end %>
+		</div><br/>-->
+		
+			<%= link_to user_path(@menu.user) do %>
+				<%= image_tag avatar_url(@menu.user), class: "img-circle avatar-small" %>
+				<span class="pull-right">Chef <%= @menu.user.fullname %></span><br/>
+				<span class="pull-right"><%= @menu.address %></span>
+			<% end %>	
+	</div>
+</div>
+<br/>
+<hr/>
+
+<div class="row">
+	<!-- PANEAU GAUCHE -- >
+	<div class="col-md-8">
+
+		<!-- Nom du menu -->
+		<div class="row">
+			<h4 class="text-babu text-center">----------------------  COMPLETEZ VOTRE MENU  -----------------------</h4><br/>
+				
+				<div class="col-md-4">
+					
+					<%= image_tag "boissons1.png" %>
+				</div>
+					
+				<div class="col-md-4">
+					
+					<%= image_tag "boissons2.png" %>
+				</div>
+
+				<div class="col-md-4">
+					
+					<%= image_tag "boissons3.png" %>
+				</div>
+			<!--
+			<div class="col-md-4 text-center">
+				<%= image_tag avatar_url(@menu.user), class: "img-circle avatar-large" %><br/><br/>
+				<span class="pull-right"><%= @menu.user.fullname %></span>
+			</div> -->
+ 
+			<!-- Informations du menu -->
+			<div class="row text-babu">
+				
+
+				<div class="row text-center">
+					
+				</div>
+			</div>
+			<hr/>
+		</div>
+		<hr/>
+		
+
+		<!-- Dsecriptions -->
+		<div class="row">
+			<div class="col-md-12">	
+				<h3> Description du menu </h3>
+				<p><%= @menu.summary %></p>	
+			</div>
+
+		</div>
+		<hr/>
+
+		<!-- Ingrédients -->
+		<div class="row">
+			<div class="com-md-3">
+				<h4>Ingrédients</h4>
+			</div>
+
+			<div class="col-md-9">
+				<div class="row">
+					<div class="col-md-6">
+						<ul class="ingredients">
+							<li class="<%= 'text-line-through' if !@menu.is_salee %>">Salée</li>
+							<li class="<%= 'text-line-through' if !@menu.is_sucree %>">Sucrée</li>
+						</ul>
+					</div>
+
+					<div class="col-md-6">
+						<ul class="ingredients">
+							<li class="<%= 'text-line-through' if !@menu.is_epicee %>">Epicée</li>
+							<li class="<%= 'text-line-through' if !@menu.is_gluten %>">Sans gluten</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr/>
+
+		<!-- Rows -->
+		<div class="row">
+			<div class="col-md-12">
+				<h3>
+					<%= pluralize(@client_reviews.count, "Notes de clients") %>
+					<span id="average_rating"></span>
+				</h3>
+				<div class="container">
+					<div><%= render "reviews/client_list" %></div>
+				</div>
+			</div>
+		</div>
+		<br/>
+		<hr/>
+
+		<!-- Carroussel of photos -->
+		<div class="row">
+
+			<!-- Autres menus à découvrir -->
+			<div class="col-md-8">
+				
+				<div class="row">
+					<h3 class="text-center"> Decouvrez autres menus de nos chefs </h3>
+					<% for menu in @menu.nearbys(10) %>
+						<div class="col-md-4">
+							<div class="panel panel-default">
+								<div class="panel-heading preview">
+									<%= image_tag menu.cover_photo(:medium) %>
+								</div>
+								<div class="panel-body">
+									<%= link_to menu.listing_name, menu %><br/>
+									(<%= menu.distance.round(2)%> Kilometres)
+
+								</div>
+							</div>
+						</div>
+					<% end %>
+				</div>
+			</div>
+
+			<!-- GOOGLE MAPS -->
+			<div class="col-md-4">
+				<!-- new google maps -->
+					<div class="row">
+								<br/><br/><br/>
+								<div id="map" style="width: 100%; height: 400px">
+									<script src="https://maps.googleapis.com/maps/api/js?key= AIzaSyCqdmfNK4-VF8SWLsfydCKXXU7x8t60bDg"></script>
+									<script>
+
+										function initialize() {
+								            var location = {lat: <%= @menu.latitude %>, lng: <%= @menu.longitude %>};
+								            var map = new google.maps.Map(document.getElementById('map'), {
+								              center: location,
+								              zoom: 14
+								            });
+
+								            var marker = new google.maps.Marker({
+								            	position: location,
+								            	map: map
+								            });
+
+								            var infoWindow = new google.maps.InfoWindow	({
+								            	content: '<div id="content"><%= image_tag avatar_url(@menu.user) %>'
+								            });
+
+								            infoWindow.open(map, marker);
+										}
+
+										google.maps.event.addDomListener(window, 'load', initialize);
+									</script>
+
+								</div>
+					</div>
+				<hr/>
+			</div>
+		</div>
+		<hr/>
+	</div>
+
+	<!-- PANNEAU DROIT -->
+	<div class="col-md-4">
+		<h1></h1>
+	</div>
+</div>
+
+<script>
+  $('#average_rating').raty({
+    path: '/assets',
+    readOnly: true,
+    score: <%= @menu.average_rating %>
+  });
+</script>

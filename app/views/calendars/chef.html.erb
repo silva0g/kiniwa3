@@ -1,0 +1,167 @@
+<% if !@menus.blank? %>
+	<div class="row">
+		<%= search_form_for @search, class: 'form-group', remote: true, url: chef_calendar_path do |f| %>
+			<div class="col-md-6 select">
+				<div class="form-group">
+					<label>Voir reservation par menus</label>
+						<%= f.select :menu_id, options_for_select(@menus.collect {|u| [u.listing_name, u.id]}, params[:menu_id]), {}, {
+						onchange: "$(this.form).submit()", class: "form-control"
+					} %>
+				</div>
+			</div>
+			<!--
+			<div class="col-md-6">
+				<div class="form-group">
+					<p>Le menu</p>
+						<%= image_tag @menu.cover_photo(:medium) %>
+				</div>
+			</div>-->
+
+			<%= f.hidden_field :start_date, id: "start-date", value: params[:start_date], onchange: "$(this.form).submit()"%>
+		<% end %>
+	</div>
+<% end %>
+
+<%= render 'form' %>
+
+<div id="calendar">
+
+</div>
+
+<script>
+	window.reservations = <%= raw @events.to_json %>
+	window.days = <%= raw @days.to_json %>	
+
+	function showReservations(data) {
+		//var goma = moment.utc(e['start_time'])
+		return data.map(function (e) {
+
+			if (e['start_date'] !== e['end_date']) {
+				e['end_date'] = moment.utc(e['end_date']).add(1, 'days'),
+				e['start_time'] = moment.utc(e['start_time'])
+			}
+
+			return{
+				name: e.fullname,
+				start: e['start_date'],
+				end: e['end_date'],
+				avatar: e.image,
+				status: e.status,
+				hora: e['start_time']
+			}
+		})
+	}
+
+	$('#calendar').fullCalendar({
+		// On define le header 
+		header: {
+			left: 'title',
+			center: '',
+			right: 'prev,next'
+		}, 
+		defaultDate: $('#start-date').val(),
+		events: showReservations(reservations),
+		eventRender: function(event, element, view) {
+			return $(`
+				<a class="fc-day-grid-event fc-h-event fc-event fc-start fc-end">
+					<div class="fc-content ${event.status}">
+						<span class="fc-title">
+							<img class="img-circle avatar-small" src="${event.avatar}">
+							${event.name}
+						</span>
+					</div>
+					<div class="tempo">
+						${event.hora}
+					</div>
+				</a>
+			`);
+		}, 
+		// code snippet pour changer le prix d'un menu pour une date selectionée
+		dayRender: function(date, cell) {
+
+			var dayInfo = $.grep(days, function(e) {
+
+				return e.day === date.format();
+			});
+
+			console.log(dayInfo);
+
+			<% if !@menus.blank? %> // Si les menus sont pas vides
+				if (dayInfo.length > 0) {
+					if (dayInfo[0].status == "Pas_Disponible") {
+						cell.addClass('fc-past');
+					} else {
+						cell.append('<span class="day-price">' + '€' + dayInfo[0].price + '</span>')
+					}
+				} else {
+					cell.append('<span class="day-price">' + '€<%= @menu.price %>' + '</span>')
+				}
+			<% end %>
+
+
+		}, 
+		selectable: true,
+		select: function(start, end, jsEvent, view) {
+			var start_date = moment(start);
+			var end_date = moment(end).subtract(1, "days");
+
+			//console.log("Début =" + start_date.format(YYYY-MM-DD));
+			//console.log("End =" + end_date.format(YYYY-MM-DD));
+
+			// 
+			<% if @menus.blank? %>
+				// Si l'utilisateu n'as pas menu dans le calendrier sera desativé:
+				$('#calendar').fullCalendar('unselect')
+			<% end %>
+
+			// OVERLAP
+			var overlap = reservations.filter(function(e) {
+
+				var r_start_date = moment(e.start_date);
+				var r_end_date = moment(e.end_date).subtract(1, "days");
+
+				return (r_start_date.isSameOrBefore(end_date) && r_end_date.isSameOrAfter(start_date))
+			}).length > 0;
+
+			if (start.isBefore(moment()) || overlap) {
+				$('#calendar').fullCalendar('unselect')
+			} else {
+				$('#new_calendar').modal('show');
+
+
+				$('#calendar_start_date').datepicker({
+
+					dateFormat: "yyyy-mm-dd", 
+					setDate: start_date
+				});
+				$('#calendar_start_date').val(start_date.format("YYYY-MM-DD"));
+
+
+				$('#calendar_end_date').datepicker({
+
+					dateFormat: "yyyy-mm-dd", 
+					setDate: end_date
+				});
+				$('#calendar_end_date').val(end_date.format("YYYY-MM-DD"));
+			}
+		}
+	});
+
+
+
+	$('.fc-prev-button').click(function() {
+		var current = new Date($('#start-date').val());
+		var prev = new Date(current.getFullYear(), current.getMonth() - 1, 1)
+		$('#start-date').val(moment(prev).format(YYYY-MM-DD))
+		$('#start-date').trigger('change')
+	});
+
+	$('.fc-next-button').click(function() {
+		var current = new Date($('#start-date').val());
+		var next = new Date(current.getFullYear(), current.getMonth() + 1, 1)
+		$('#start-date').val(moment(next).format(YYYY-MM-DD))
+		$('#start-date').trigger('change')
+	});
+
+
+</script>
