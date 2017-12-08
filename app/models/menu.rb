@@ -4,7 +4,8 @@ class Menu < ApplicationRecord
 
   #---- Kinywa 2 ----
   belongs_to :user
-  has_many :photos
+  # has_many :photos
+  has_many :photos, as: :imageable
   has_many :reservations
 
   has_many :client_reviews

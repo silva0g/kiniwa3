@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171030131527) do
+ActiveRecord::Schema.define(version: 20171204082148) do
 
   create_table "calendars", force: :cascade do |t|
     t.date     "day"
@@ -77,7 +77,32 @@ ActiveRecord::Schema.define(version: 20171030131527) do
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
+    t.integer  "imageable_id"
+    t.string   "imageable_type"
+    t.index ["imageable_type", "imageable_id"], name: "index_photos_on_imageable_type_and_imageable_id"
     t.index ["menu_id"], name: "index_photos_on_menu_id"
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.string   "listing_name"
+    t.text     "summary"
+    t.integer  "price"
+    t.boolean  "active"
+    t.string   "product_type"
+    t.integer  "user_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["user_id"], name: "index_products_on_user_id"
+  end
+
+  create_table "reservation_products", force: :cascade do |t|
+    t.integer  "reservation_id"
+    t.integer  "product_id"
+    t.integer  "quantity"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["product_id"], name: "index_reservation_products_on_product_id"
+    t.index ["reservation_id"], name: "index_reservation_products_on_reservation_id"
   end
 
   create_table "reservations", force: :cascade do |t|

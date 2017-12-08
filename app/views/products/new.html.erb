@@ -1,0 +1,35 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		Créer votre menu exceptionel
+	</div>
+
+	<div class="panel-body">
+		<div class="container">
+
+			<%= form_for @product do |f| %>
+				<div class="row">
+					<div class="col-md-4 select">
+						<div class="form-group">
+							<label>Type de Product</label>
+							<%= f.select :product_type, [["Convivial", "Convivial"], ["Tentation", "Tentation"], ["Epicurie", "Epicurie"], ["Signature", "Signature"]], id: "menu_type", prompt: "Select...", class: "form-control" %>
+						</div>
+					</div>
+
+					<!-- Ajouter cet snippet pout instant-->
+					<!-- Fin de instant snippet -->
+
+<!-- 					<div class="col-md-4 select">
+						<div class="form-group">
+							<label>Convives</label>
+							<%#= f.select :servings, [["1", 1],["2", 2], ["3",3], ["4", 4], ["5", 5], ["6", 6], ["7",7],["8",8]], id: "servings", prompt: "Select...", class: "form-control" %>
+						</div>
+					</div> -->
+
+					<div>
+						<%= f.submit "ENREGISTRER", class: "btn btn-normal" %>
+					</div>
+				</div><!-- End row -->
+			<% end %>
+		</div>
+	</div>
+</div>
