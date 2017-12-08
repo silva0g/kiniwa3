@@ -1,0 +1,15 @@
+$(".added-products").html('')
+<% @cart.each do |cart| %>
+<% product = Product.find(cart[0]) %>
+<% quantity = cart[1] %>
+var f = $([
+  "<div class='row'>",
+  "  <div class='col-md-4'><%= product.listing_name %></div>",
+  "  <div class='col-md-3'><%= quantity %></div>",
+  "   <div class='col-md-3'>€<%= product.price * quantity.to_i %></div>",
+  "   <div class='col-md-2'>",
+  "   <a href='/menus/1/remove_product?product_id=<%= product.id %>' data-remote='true'>X</a> </div>",
+  "</div>"
+].join("\n"));
+  $(".added-products").append(f);
+<% end %>

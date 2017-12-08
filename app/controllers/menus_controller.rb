@@ -52,6 +52,31 @@ class MenusController < ApplicationController
     
   end
 
+  def add_product
+    session[:cart] ||= {}
+    @cart = session[:cart]
+    if @cart && @cart.key?(params[:product_id])
+      @cart[params[:product_id]] += params[:quantity].to_i
+    else
+      @cart[params[:product_id]] = params[:quantity].to_i
+    end
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def remove_product
+    @cart = session[:cart]
+    if @cart && @cart.key?(params[:product_id])
+      @cart.delete(params[:product_id])
+    end
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def photo_upload
     @photos = @menu.photos
   end
@@ -79,6 +104,7 @@ class MenusController < ApplicationController
   # --- Pour les Reservations -->
   def preload
     today = Date.today
+    session.delete(:cart)
 
     # Add this to define the now time 
     #now = Time.now

@@ -1,0 +1,78 @@
+<div class="row">
+  <h4 class="text-babu text-center">----------------------  COMPLETEZ VOTRE MENU  -----------------------</h4><br/>
+    
+   <!--  <div class="col-md-4" >
+      
+      <%#= image_tag "boissons1.png", class: "product-image" %>
+    </div>
+      
+    <div class="col-md-4" style="margin-bottom: 1em;">
+      
+      <%#= image_tag "boissons2.png", class: "product-image" %>
+    </div> -->
+
+
+
+  <% @menu.user.products.each do |product| %>
+    <div class="col-md-4" style="margin-bottom: 1em;">
+      <div class="hover-container">
+        <%= image_tag product.photos.first.image.url(), class: 'product-image image' %><br/><br/>
+        <div class="middle">    
+          <div class="text" data-toggle="modal" data-target="#myModal" data-product="<%= product.id %>" data-name="<%= product.listing_name %>" >Add</div>
+
+        </div>
+      </div>
+      <div style="text-align: center"><%= product.listing_name %></div>
+    </div>
+  <% end %>
+
+  <!-- Informations du product -->
+  <div class="row text-babu">
+    
+
+    <div class="row text-center">
+      
+    </div>
+  </div>
+  <hr/>
+</div>
+<hr/>
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+  
+    <!-- Modal content-->
+    <div class="modal-content">
+    <%= form_tag add_product_menu_path, :method => :post, remote: true do %>
+      <div class="modal-header">
+        <button type="button" class="close" style="width: 1%" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+      <p>
+        <div class="form-group">
+          <label for="usr">Quantity: </label>
+          <%= number_field_tag :quantity, 1 , min: "1", required: 'required' %>
+          <%= hidden_field_tag :product_id %>
+        </div>
+      </p>
+      </div>
+      <div class="modal-footer">
+        <div class="row">
+          <div class="col-md-4">
+             <%= submit_tag 'Add Product', class: "btn btn-default" %>
+          </div>
+          <div class="col-md-4">
+             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    </div>
+    
+  </div>
+
+</div>
+
+<!-- Trigger the modal with a button -->
+
+<!-- Modal -->

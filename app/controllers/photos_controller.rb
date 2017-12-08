@@ -1,23 +1,25 @@
 class PhotosController < ApplicationController
 
 	def create
-		@menu = Menu.find(params[:menu_id])
+		klass = params[:imageable_type].constantize
+		@imageable = klass.find(params[:imageable_id])
 		if params[:images]
 			params[:images].each do |img|
-				@menu.photos.create(image: img)
+				@imageable.photos.create(image: img)
 			end
 
-			@photos = @menu.photos
+			@photos = @imageable.photos
 			redirect_back(fallback_location: request.referer, notice: "Enregistée...")
 		end
 	end
 
 	def destroy
 		@photo = Photo.find(params[:id]) # Pour chercer les photos par id
-		@menu = @photo.menu #Pour trover les photos de cette menu
+		@imageable = @photo.imageable #Pour trover les photos de cette menu
 
 		@photo.destroy # Pour effacer le photo deja selectionnée
-		@photos = Photo.where(menu_id: @menu.id) # Pour avoir la liste des photos que on n as pas effacé
+		#@photos = Photo.where(imageable_id: @imageable.id) # Pour avoir la liste des photos que on n as pas effacé
+		@photos = @imageable.photos # Pour avoir la liste des photos que on n as pas effacé
 
 		respond_to :js
 	end

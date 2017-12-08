@@ -58,39 +58,7 @@
 	<div class="col-md-8">
 
 		<!-- Nom du menu -->
-		<div class="row">
-			<h4 class="text-babu text-center">----------------------  COMPLETEZ VOTRE MENU  -----------------------</h4><br/>
-				
-				<div class="col-md-4">
-					
-					<%= image_tag "boissons1.png" %>
-				</div>
-					
-				<div class="col-md-4">
-					
-					<%= image_tag "boissons2.png" %>
-				</div>
-
-				<div class="col-md-4">
-					
-					<%= image_tag "boissons3.png" %>
-				</div>
-			<!--
-			<div class="col-md-4 text-center">
-				<%= image_tag avatar_url(@menu.user), class: "img-circle avatar-large" %><br/><br/>
-				<span class="pull-right"><%= @menu.user.fullname %></span>
-			</div> -->
- 
-			<!-- Informations du menu -->
-			<div class="row text-babu">
-				
-
-				<div class="row text-center">
-					
-				</div>
-			</div>
-			<hr/>
-		</div>
+		<%= render partial: 'complete_your_menu', products: @menu.user.products %>
 		<hr/>
 		
 

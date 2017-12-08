@@ -8,6 +8,7 @@ class User < ApplicationRecord
   validates :fullname, presence: true, length: {maximum: 50}
 
   has_many :menus # Parce que un utilisateur peut avoir plusieur menus
+  has_many :products # Parce que un utilisateur peut avoir plusieur products
   has_many :reservations
 
   has_many :client_reviews, class_name: "ClientReview", foreign_key: "client_id"

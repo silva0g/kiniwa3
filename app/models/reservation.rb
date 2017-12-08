@@ -9,6 +9,8 @@ class Reservation < ApplicationRecord
 	#---- Kinywa2 ------	
   belongs_to :user
   belongs_to :menu
+  has_many :reservation_products
+  has_many :products, through: :reservation_products
 
 	scope :current_week_revenue, -> (user) {
 	    joins(:menu)

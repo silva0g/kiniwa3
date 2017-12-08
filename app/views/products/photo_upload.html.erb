@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-3">
-    <%= render 'menu_menu' %>
+    <%= render 'product_menu' %>
   </div>
 
   <div class="col-md-9">
@@ -16,7 +16,7 @@
             <div class="col-md-offset-3 col-md-6">
               <!-- Script pour le telechargement de la photo -->
 
-              <%= form_for @menu, url: photos_path(imageable_type: @menu.class, imageable_id: @menu.id, menu_id: @menu.id), method: 'post', html: {multipart: true} do |f| %>
+              <%= form_for @product, url: photos_path(imageable_type: @product.class, imageable_id: @product.id), method: 'post', html: {multipart: true} do |f| %>
                 <div class="row">
                   <div class="form-group">
                     <span class="btn btn-default btn-file text-babu">

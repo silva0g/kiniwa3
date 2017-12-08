@@ -16,7 +16,7 @@ Rails.application.routes.draw do
     end
   end 
 
-
+  resources :photos, only: [:create, :destroy]
   resources :menus, except: [:edit] do
   	member do
   		get 'listing'
@@ -27,10 +27,23 @@ Rails.application.routes.draw do
   		get 'location'
       get 'preload'
       get 'preview'
+      post 'add_product'
+      get 'remove_product'
   	end
-    resources :photos, only: [:create, :destroy]
+   
     resources :reservations, only: [:create]
     resources :calendars  
+  end
+
+   resources :products, except: [:edit] do
+    member do
+      get 'listing'
+      get 'pricing'
+      get 'description'
+      get 'photo_upload'
+      get 'preload'
+      get 'preview'
+    end
   end
 
   resources :chef_reviews, only: [:create, :destroy]

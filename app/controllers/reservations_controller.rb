@@ -35,7 +35,8 @@ class ReservationsController < ApplicationController
 			@reservation = current_user.reservations.build(reservation_params)
 			@reservation.menu = menu
 			@reservation.price = menu.price
-			@reservation.total = menu.price * @reservation.convive
+			@reservation.total = (menu.price * @reservation.convive) + total_products
+			
 			#@reservation.save
 
 
@@ -50,6 +51,8 @@ class ReservationsController < ApplicationController
 			else
 				flash[:alert] = "Impossible passé la commande de prestation!"
 			end
+
+			create_reservation_products @reservation if @reservation.persisted?
 		end
 
 		redirect_to menu
@@ -89,6 +92,26 @@ class ReservationsController < ApplicationController
 	
 	private
 
+	def total_products
+		cart = session[:cart]
+		total = 0
+		cart.each do |c|
+			product = Product.find(c[0])
+			total = total + (product.price * c[1].to_i)
+		end
+		total
+	end
+
+	def create_reservation_products(reservation)
+		cart = session[:cart]
+		cart.each do |c|
+			product = Product.find(c[0])
+			ReservationProduct.create(reservation: reservation, product: product, quantity: c[1])
+		end
+	end
+
+
+
 		def send_sms(menu, reservation)
 			@client = Twilio::REST::Client.new
       		@client.messages.create(
@@ -101,6 +124,7 @@ class ReservationsController < ApplicationController
 		def charge(menu, reservation)
 			if !reservation.user.stripe_id.blank? # Si la reservation n'est pas vide
 				customer = Stripe::Customer.retrieve(reservation.user.stripe_id)
+				binding.pry
 				charge = Stripe::Charge.create(
 					:customer => customer.id,
 					:amount => reservation.total * 100,

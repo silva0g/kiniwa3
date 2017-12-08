@@ -1,0 +1,38 @@
+<div class="row">
+	<div class="col-md-3">
+		<%= render 'product_menu' %>
+	</div>
+
+	<div class="col-md-9">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Liste de products
+			</div>
+
+			<div class="panel-body">
+				<div class="container">
+
+					<%= form_for @product do |f| %>
+						<div class="row">
+							<div class="col-md-4 select">
+								<div class="form-group">
+									<label>Type de Product</label>
+									<%= f.select :product_type, [["Convivial", "Convivial"], ["Tentation", "Tentation"], ["Epicurie", "Epicurie"], ["Signature", "Signature"]], id: "product_type", prompt: "Select...", class: "form-control" %>
+								</div>
+							</div>
+
+							<!-- Ajouter cet snippet pout instant-->
+
+							<br/><br/>
+
+							<div>
+								<%= f.submit "ENREGISTRER", class: "btn btn-normal" %>
+							</div>
+						</div><!-- End row -->
+					<% end %>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

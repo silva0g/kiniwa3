@@ -1,0 +1,131 @@
+<!-- IMAGE -->
+<div class="row">
+	<div class="col-md-8">
+		<%= image_tag @product.cover_photo(nil), width: "100%" %>
+	</div>
+	<div class="col-md-4">
+		<h4 class="text-babu"><%= @product.listing_name %></h4>
+		<%#= render 'reservations/form' %>
+
+		<!--
+		<div class="row">
+
+			<% if @photos.length > 0 %>
+						<div id="myCarousel" class="carousel slide" data-ride="carousel">
+						  
+						  <ol class="carousel-indicators">
+						  	<% @photos.each do |photo| %>
+						    	<li data-target="#myCarousel" data-slide-to="photo.id"></li>
+						    <% end %>
+						   
+						   
+						  </ol>
+
+						  
+						  <div class="carousel-inner">
+						  	<% @photos.each do |photo| %>
+							  	<div class="item <%= 'active' if photo.id == @photos[0].id %>">
+							      <%= image_tag photo.image.url() %>
+							    </div>
+						  	<% end %>
+						  </div>
+
+						  
+						  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+						    <span class="glyphicon glyphicon-chevron-left"></span>
+						    <span class="sr-only">Previous</span>
+						  </a>
+						  <a class="right carousel-control" href="#myCarousel" data-slide="next">
+						    <span class="glyphicon glyphicon-chevron-right"></span>
+						    <span class="sr-only">Next</span>
+						  </a>
+						</div>
+			<% end %>
+		</div><br/>-->
+		
+			<%= link_to user_path(@product.user) do %>
+				<%= image_tag avatar_url(@product.user), class: "img-circle avatar-small" %>
+				<span class="pull-right">Chef <%= @product.user.fullname %></span><br/>
+			<% end %>	
+	</div>
+</div>
+<br/>
+<hr/>
+
+<div class="row">
+	<!-- PANEAU GAUCHE -- >
+	<div class="col-md-8">
+
+		<!-- Nom du product -->
+		<div class="row">
+			<h4 class="text-babu text-center">----------------------  COMPLETEZ VOTRE MENU  -----------------------</h4><br/>
+				
+				<div class="col-md-4">
+					
+					<%= image_tag "boissons1.png" %>
+				</div>
+					
+				<div class="col-md-4">
+					
+					<%= image_tag "boissons2.png" %>
+				</div>
+
+				<div class="col-md-4">
+					
+					<%= image_tag "boissons3.png" %>
+				</div>
+			<!--
+			<div class="col-md-4 text-center">
+				<%= image_tag avatar_url(@product.user), class: "img-circle avatar-large" %><br/><br/>
+				<span class="pull-right"><%= @product.user.fullname %></span>
+			</div> -->
+ 
+			<!-- Informations du product -->
+			<div class="row text-babu">
+				
+
+				<div class="row text-center">
+					
+				</div>
+			</div>
+			<hr/>
+		</div>
+		<hr/>
+		
+
+		<!-- Dsecriptions -->
+		<div class="row">
+			<div class="col-md-12">	
+				<h3> Description du product </h3>
+				<p><%= @product.summary %></p>	
+			</div>
+
+		</div>
+		<hr/>
+
+		
+		<hr/>
+
+		<br/>
+		<hr/>
+
+		<!-- Carroussel of photos -->
+		<div class="row">
+
+			<!-- Autres products à découvrir -->
+			
+
+			<!-- GOOGLE MAPS -->
+			
+				<hr/>
+			</div>
+		</div>
+		<hr/>
+	</div>
+
+	<!-- PANNEAU DROIT -->
+	<div class="col-md-4">
+		<h1></h1>
+	</div>
+</div>
+

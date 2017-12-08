@@ -1,13 +1,21 @@
 $('#photos').html("<%= j render 'photos_list' %>")
 
 // On va mettre une check pour cache le signet de presence photo si tout le sphotos sont effaces
-<% if @menu.photos.blank? %>
+<% if @imageable.photos.blank? %>
 	$('#photo_check').hide();
 <% end %>
 
 
-<% if !@menu.active && !@menu.price.blank? && !@menu.listing_name.blank? && !@menu.photos.blank? && !@address.blank? %>
-	$('#publish_button').attr('disabled', false);
-<% else %>
-	$('#publish_button').attr('disabled', true);
+<% if @imageable.class == 'Menu' %>
+  <% if !@imageable.active && !@imageable.price.blank? && !@imageable.listing_name.blank? && !@imageable.photos.blank? && !@address.blank? %>
+  	$('#publish_button').attr('disabled', false);
+  <% else %>
+  	$('#publish_button').attr('disabled', true);
+  <% end %>
+<% elsif @imageable.class == 'Product' %>
+<% if !@imageable.active && !@imageable.price.blank? && !@imageable.listing_name.blank? && !@imageable.photos.blank? %>
+    $('#publish_button').attr('disabled', false);
+  <% else %>
+    $('#publish_button').attr('disabled', true);
+  <% end %>
 <% end %>
